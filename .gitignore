@@ -1,8 +1,10 @@
 
+# Week 26:
+week_46_drop_activation/logs/
+week_46_drop_activation/logs_randomized_relu
+week_46_drop_activation/*.h5
+week_46_drop_activation/*.dict
 
-# Model checkpoint from Keras
-*.h5
-*.history
 
 .idea/
 

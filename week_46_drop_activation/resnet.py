@@ -17,6 +17,7 @@ from tensorflow.keras import layers
 from tensorflow.keras import regularizers
 
 from drop_activation import DropActivationKeras as DropActivation
+from randomized_relu import RandomizedReLUKeras as RandomizedReLU
 
 
 class ResNet56:
@@ -24,10 +25,13 @@ class ResNet56:
                  input_shape=None,
                  classes=10,
                  p=0.95,
+                 rate=0.4,
                  activation='drop-activation',
+                 a=3,
+                 b=8,
                  **kwargs):
 
-        list_activations = ['drop-activation', 'relu', 'random-relu']
+        list_activations = ['drop-activation', 'relu', 'randomized-relu', 'relu-dropout']
         if activation not in list_activations:
             raise ValueError("Invalid activation function : {} ! Must be in {}".format(activation, list_activations))
 
@@ -36,6 +40,9 @@ class ResNet56:
         self.classes = classes
         self.activation = activation
         self.p = p
+        self.rate = rate
+        self.a = a
+        self.b = b
 
         if backend.image_data_format() == 'channels_last':
             self.bn_axis = 3
@@ -87,8 +94,12 @@ class ResNet56:
             return layers.Activation('relu')(inputs)
         elif self.activation == "drop-activation":
             return DropActivation(p=self.p)(inputs)
-        elif self.activation == "random-relu":
-            raise NotImplementedError()
+        elif self.activation == "relu-dropout":
+            x = layers.Dropout(rate=self.rate)(inputs)
+            x = layers.Activation("relu")(x)
+            return x
+        elif self.activation == "randomized-relu":
+            return RandomizedReLU(a=self.a, b=self.b)(inputs)
         else:
             # linear activation
             return inputs
