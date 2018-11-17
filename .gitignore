@@ -1,5 +1,9 @@
 
 
+# Model checkpoint from Keras
+*.h5
+*.history
+
 .idea/
 
 
