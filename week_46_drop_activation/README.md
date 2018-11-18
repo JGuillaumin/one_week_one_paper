@@ -5,7 +5,7 @@
 [Original paper](https://arxiv.org/abs/1811.05850), Submitted on 14 Nov 2018
 
 
-.... 
+DropActivation is a new random activation function which reconciliates DropOut and Batch Normalization (cf )
 
 ## Implemented features
 
@@ -20,17 +20,10 @@ So, in the future, I will write the layer with `keras` instead of `tensorflow.ke
 **Implemented features:**
 
 - `DropActivation` layer
-- `RandomizedReLU` layer ([]())
+- `RandomizedReLU` layer ([Empirical Evaluation of Rectified Activations in Convolutional Network](https://arxiv.org/abs/1505.00853))
 - ResNet-56 on CIFAR-10 with Keras (TF backend), with MomentumSGD (0.9)
 - data augmentation: random crop, horizontal flips and per sample standardization
 - 3 notebooks (same code, just different networks) with seeded initialization (same initial random weights)
-
-
-## Drop Activation 
-
-
-## Randomized ReLU (RReLU)
-
 
 
 ## Comparision: ReLUxDropout, Drop Activation and Randomized ReLU
@@ -49,3 +42,11 @@ Model & training configuration:
     random crop (5 pixels), random horizontal flips (no vertical)
 - training set vs validation : 80/20 % of initial training set (shuffle and stratified split)
 - test set from CIFAR-10 as final test set !
+
+
+Activation function | ACC-validation | ACC-test (generalization gap)
+------------------- | ---------------- | ----------
+Relu | 92.47 | 92.58 (**+ 0.11**)
+Dropout with ReLU | 90.04 | 89.92 (- 0.12)
+Randomized ReLU | 91.18 | 90.65 (- 0.53)
+Drop Activation | **93.36** | **93.27** (- 0.09) 
