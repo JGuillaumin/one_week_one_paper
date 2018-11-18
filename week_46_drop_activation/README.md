@@ -26,7 +26,11 @@ So, in the future, I will write the layer with `keras` instead of `tensorflow.ke
 - 3 notebooks (same code, just different networks) with seeded initialization (same initial random weights)
 
 
-## Comparision: ReLUxDropout, Drop Activation and Randomized ReLU
+## Drop Activation: new activation layer which combines Dropout and ReLU (and it's compatible with BatchNorm!)
+
+
+
+## Comparision: ReLU, Drop Activation and Randomized ReLU
 
 
 
