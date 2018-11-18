@@ -4,18 +4,27 @@
 
 [Original paper](https://arxiv.org/abs/1811.05850), Submitted on 14 Nov 2018
 
+![intro](https://github.com/jguillaumin/one_week_one_paper/raw/master/week_46_drop_activation/plot_acc.png)
 
-DropActivation is a new random activation function which reconciliates DropOut and Batch Normalization (cf )
+DropActivation is a new random activation function which reconciles Dropout and Batch Normalization (cf [Understanding the
+disharmony between dropout and batch normalization by variance shift](https://arxiv.org/abs/1801.05134)). 
+
+I implemented this new layer into Keras, and also [Randomized-ReLU]((https://arxiv.org/abs/1505.00853))
+
 
 ## Implemented features
 
-I don't use `keras` python package, I use `tensorflow.keras` ! 
-(I did not use Keras for 2 years ... it's so misleading to have Keras within TensorFlow). 
-So If you use raw python package `keras`, please be sure that the version of `keras` is the same the version of Keras
-in `tensorflow`. Today (Nov 2018), if you `pip install keras` it will be `keras==2.2.0` while the Keras branch in TensorFlow
-is `keras==2.1.6` ..
+**Note**: `ìmport keras` vs `import tensorflow.keras` 
 
-So, in the future, I will write the layer with `keras` instead of `tensorflow.keras`.
+I don't use `keras` python package, I use `tensorflow.keras` ! 
+(I did not use Keras for 2 years ... it's so misleading to have Keras within TensorFlow now). 
+So If you use raw python package `keras`, please be sure that the version of `keras` is the same as the version of Keras
+in `tensorflow`. Today (Nov 2018), if you `pip install keras` it will be `keras.__version__==2.2.0` while the Keras branch in TensorFlow
+is `tensorflow.keras.__version__==2.1.6` ...
+
+If necessary, I will release a pure Keras version of the new layers.
+
+
 
 **Implemented features:**
 
@@ -28,10 +37,23 @@ So, in the future, I will write the layer with `keras` instead of `tensorflow.ke
 
 ## Drop Activation: new activation layer which combines Dropout and ReLU (and it's compatible with BatchNorm!)
 
+DropActivation combines ReLU and Dropout. 
+In training mode, the activation function is random. Like relu, if the neural activation is positive, th identity function is used. 
+If the input is negative, with a proba of p (p=0.95), the output is zero (like with ReLU). But with a proba 0.05,
+the identity function is used.
 
+So here, we switch randomly between ReLU(95%) and identity mapping(5%) function. 
+
+At testing time, we use a LeakyReLU activation (deterministic) with a slope 1/(1-p) ! 
+
+
+![formula](https://github.com/jguillaumin/one_week_one_paper/raw/master/week_46_drop_activation/formula.png)
 
 ## Comparision: ReLU, Drop Activation and Randomized ReLU
 
+Here, a short comparision of ReLU, DropActivation and Randomized-ReLU
+
+![table](https://github.com/jguillaumin/one_week_one_paper/raw/master/week_46_drop_activation/table.png)
 
 
 ## Results (from my code)
