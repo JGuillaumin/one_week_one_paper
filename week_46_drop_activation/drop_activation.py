@@ -67,7 +67,10 @@ class DropActivationKeras(keras_layers.Layer):
                     # in binary tensor ~ 5% of are set 1 , 95% are set 0
 
                     # drop 95% of the negative part, keep all in the positive part
-                    ret = - binary_tensor*nn.relu((-x)) + nn.relu(x)
+                    # old implementation:
+                    # ret = - binary_tensor*nn.relu((-x)) + nn.relu(x)
+                    # new implementation, only 1 relu operation
+                    ret = binary_tensor*x + (1-binary_tensor)*nn.relu(x)
                     if not context.executing_eagerly():
                         ret.set_shape(x.get_shape())
                     return ret
